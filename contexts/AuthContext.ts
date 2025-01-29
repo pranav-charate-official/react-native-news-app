@@ -1,9 +1,12 @@
-import {createContext} from 'react';
+import {createContext, Dispatch, SetStateAction} from 'react';
 
-const nullUser: User = {
-  fullName: '_noname_',
-  email: '_noemail_',
-  password: '_nopassword_',
+type UserContextType = {
+  user: User | null;
+  setUser: Dispatch<SetStateAction<User | null>>;
 };
-
-export const AuthContext = createContext<User>(nullUser);
+export const AuthContext = createContext<UserContextType>({
+  user: null,
+  setUser: () => {
+    console.error('Default setUser is used, fix now.');
+  },
+});

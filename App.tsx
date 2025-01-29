@@ -21,29 +21,31 @@ const Stack = createNativeStackNavigator();
 function App(): React.JSX.Element {
   useKeepAwake();
 
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null);
   return (
     <StrictMode>
       <SafeAreaProvider>
         <SafeAreaView style={{flexGrow: 1}}>
           <GestureHandlerRootView>
-            <NavigationContainer>
-              <Stack.Navigator
-                screenOptions={{
-                  statusBarStyle: 'dark',
-                  statusBarBackgroundColor: '#fbfff4',
-                  headerShown: false,
-                }}>
-                <Stack.Screen name="Splash" component={SplashScreen} />
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="Register" component={RegisterScreen} />
-                <Stack.Screen
-                  name="HomeTabNavigator"
-                  component={HomeTabNavigator}
-                  // options={{headerShown: true}}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
+            <AuthContext.Provider value={{user: user, setUser: setUser}}>
+              <NavigationContainer>
+                <Stack.Navigator
+                  screenOptions={{
+                    statusBarStyle: 'dark',
+                    statusBarBackgroundColor: '#fbfff4',
+                    headerShown: false,
+                  }}>
+                  <Stack.Screen name="Splash" component={SplashScreen} />
+                  <Stack.Screen name="Login" component={LoginScreen} />
+                  <Stack.Screen name="Register" component={RegisterScreen} />
+                  <Stack.Screen
+                    name="HomeTabNavigator"
+                    component={HomeTabNavigator}
+                    // options={{headerShown: true}}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </AuthContext.Provider>
           </GestureHandlerRootView>
         </SafeAreaView>
       </SafeAreaProvider>

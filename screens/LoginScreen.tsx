@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Image,
   ScrollView,
@@ -12,14 +12,19 @@ import FormInputField from '../components/FormInputField';
 import FormButton from '../components/FormButton';
 import DividerWithText from '../components/DividerWithText';
 import {assets} from '../assets/assets';
+import {AuthContext} from '../contexts/AuthContext';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function validateLogin() {
-    const correctEmail = 'sankey@gmail.com';
-    const correctPassword = 'abcd1234';
+  const {user} = useContext(AuthContext);
+
+  function validateLogin(currentUser: User | null) {
+    console.log(currentUser);
+    if (currentUser == null) {
+      return ToastAndroid.show('Register yourself first', ToastAndroid.SHORT);
+    }
 
     if (email === '') {
       return ToastAndroid.show('Email is required', ToastAndroid.SHORT);
@@ -27,12 +32,16 @@ const LoginScreen = ({navigation}) => {
       return ToastAndroid.show('Password is required', ToastAndroid.SHORT);
     }
 
+    const correctEmail = currentUser.email;
+    const correctPassword = currentUser.password;
+
     if (email !== correctEmail || password !== correctPassword) {
       return ToastAndroid.show(
         'Incorrect email or password',
         ToastAndroid.SHORT,
       );
     }
+
     setEmail('');
     setPassword('');
 
@@ -50,7 +59,6 @@ const LoginScreen = ({navigation}) => {
       <ScrollView
         contentContainerStyle={style.loginForm}
         keyboardShouldPersistTaps={'handled'}>
-        {/* <View style={style.loginForm}> */}
         <FormInputField
           label="Email Address"
           placeHolder="hello@example.com"
@@ -68,7 +76,11 @@ const LoginScreen = ({navigation}) => {
           onChange={setPassword}
         />
 
-        <FormButton backgroundColor="#3b5100" onPress={validateLogin}>
+        <FormButton
+          backgroundColor="#3b5100"
+          onPress={() => {
+            validateLogin(user);
+          }}>
           <Text style={appStyle.buttonText}>Login</Text>
         </FormButton>
 
@@ -80,7 +92,6 @@ const LoginScreen = ({navigation}) => {
             Continue with Google
           </Text>
         </FormButton>
-        {/* </View> */}
 
         <Text
           style={style.goToRegister}

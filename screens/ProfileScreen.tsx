@@ -1,23 +1,61 @@
-import React from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useContext} from 'react';
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  View,
+} from 'react-native';
 import {appStyle} from '../AppStyle';
+import {AuthContext} from '../contexts/AuthContext';
+import FormButton from '../components/FormButton';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation}) => {
+  const {user, setUser} = useContext(AuthContext);
+
+  function logOutUser() {
+    // Alert.prompt()
+    navigation.replace('Login');
+    ToastAndroid.show('Logged out succesfully.', ToastAndroid.SHORT);
+  }
+
+  function deleteUser() {
+    // Alert.prompt()
+    setUser(null);
+    navigation.replace('Login');
+    ToastAndroid.show('Account deleted succesfully.', ToastAndroid.SHORT);
+  }
+
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}>
-      <View style={appStyle.screen}>
-        <View>
-          <Text style={appStyle.pageTitle}>Profile</Text>
-          <Text style={appStyle.pageSubTitle}>Everything about you</Text>
-        </View>
-
-        <View style={style.informationContainer}>
-          <UserInformationField label="Full Name" value="abcd" />
-          <UserInformationField label="Email" value="abcd" />
-          <UserInformationField label="Password" value="*******" />
-        </View>
+    <View style={appStyle.screen}>
+      <View>
+        <Text style={appStyle.pageTitle}>Profile</Text>
+        <Text style={appStyle.pageSubTitle}>Everything about you</Text>
       </View>
-    </ScrollView>
+      <ScrollView contentContainerStyle={style.informationContainer}>
+        <UserInformationField
+          label="Email"
+          value={user?.email ?? 'nullEmail'}
+        />
+        <UserInformationField
+          label="Full Name"
+          value={user?.fullName ?? 'nullFullName'}
+        />
+        <UserInformationField
+          label="Password"
+          value={user?.password ?? 'nullPassword'}
+        />
+
+        <FormButton backgroundColor={'#ed8600'} onPress={logOutUser}>
+          <Text style={appStyle.buttonText}>Log out</Text>
+        </FormButton>
+
+        <FormButton backgroundColor={'#ff0000'} onPress={deleteUser}>
+          <Text style={appStyle.buttonText}>Delete my account</Text>
+        </FormButton>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -37,6 +75,7 @@ const UserInformationField = (props: Props) => {
 const style = StyleSheet.create({
   informationContainer: {
     marginTop: 30,
+    paddingHorizontal: 25,
     gap: 20,
   },
   informationFieldContainer: {
@@ -54,6 +93,7 @@ const style = StyleSheet.create({
   },
   informationFieldValue: {
     fontSize: 20,
+    fontFamily: 'monospace',
   },
 });
 
