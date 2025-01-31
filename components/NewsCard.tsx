@@ -1,25 +1,33 @@
 import React, {useRef} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, ToastAndroid, View} from 'react-native';
 import {TapGestureHandler} from 'react-native-gesture-handler';
 import {assets} from '../assets/assets';
+import {useAppDispatch} from '../hooks';
+import {addBookmark, toggleBookmark} from '../redux_slices/bookmarksSlice';
 
 type NewsCardProps = {
   newsSourceName: string;
   newsTitle: string;
   newsDescription: string;
   newsImageUrl: string;
-  onDoublePress: () => void;
 };
 
 const NewsCard = (newsCardProps: NewsCardProps) => {
-  const doubleTapRef = useRef(null);
+  const dispatch = useAppDispatch();
+
+  const handleNewsDoubleTap = () => {
+    const currentNews: News = {
+      title: newsCardProps.newsTitle,
+      description: newsCardProps.newsDescription,
+      source: {name: newsCardProps.newsSourceName},
+      urlToImage: newsCardProps.newsImageUrl,
+    };
+
+    dispatch(toggleBookmark(currentNews));
+  };
+
   return (
-    <TapGestureHandler
-      ref={doubleTapRef}
-      numberOfTaps={2}
-      onActivated={() => {
-        // newsCardProps.onDoublePress();
-      }}>
+    <TapGestureHandler numberOfTaps={2} onActivated={handleNewsDoubleTap}>
       <View style={newsCardStyle.container}>
         <Image
           source={

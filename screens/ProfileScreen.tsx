@@ -8,23 +8,29 @@ import {
   View,
 } from 'react-native';
 import {appStyle} from '../AppStyle';
-import {AuthContext} from '../contexts/AuthContext';
+import {authContext} from '../contexts/authContext';
 import FormButton from '../components/FormButton';
 
 const ProfileScreen = ({navigation}) => {
-  const {user, setUser} = useContext(AuthContext);
+  const {user, setUser} = useContext(authContext);
 
   function logOutUser() {
-    // Alert.prompt()
     navigation.replace('Login');
     ToastAndroid.show('Logged out succesfully.', ToastAndroid.SHORT);
   }
 
   function deleteUser() {
-    // Alert.prompt()
-    setUser(null);
-    navigation.replace('Login');
-    ToastAndroid.show('Account deleted succesfully.', ToastAndroid.SHORT);
+    Alert.alert('Delete Account', 'Do you really want to delete your account', [
+      {text: 'No', onPress: () => {}, isPreferred: true},
+      {
+        text: 'Yes',
+        onPress: () => {
+          setUser(null);
+          navigation.replace('Register');
+          ToastAndroid.show('Account deleted succesfully.', ToastAndroid.SHORT);
+        },
+      },
+    ]);
   }
 
   return (

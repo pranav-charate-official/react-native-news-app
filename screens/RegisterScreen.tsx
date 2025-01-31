@@ -13,10 +13,10 @@ import FormInputField from '../components/FormInputField';
 import FormButton from '../components/FormButton';
 import DividerWithText from '../components/DividerWithText';
 import {assets} from '../assets/assets';
-import {AuthContext} from '../contexts/AuthContext';
+import {authContext} from '../contexts/authContext';
 
 const RegisterScreen = ({navigation}) => {
-  const {setUser} = useContext(AuthContext);
+  const {setUser} = useContext(authContext);
 
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');

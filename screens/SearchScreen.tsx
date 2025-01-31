@@ -13,8 +13,7 @@ import Icon from '@react-native-vector-icons/material-design-icons';
 import axios from 'axios';
 import NewsCard from '../components/NewsCard';
 
-const SearchScreen = ({route}) => {
-  const {toggleBookmark} = route.params;
+const SearchScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchedNews, setSearchedNews] = useState<News[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -85,11 +84,11 @@ const SearchScreen = ({route}) => {
               newsDescription={item.description}
               newsSourceName={item.source.name}
               newsImageUrl={item.urlToImage}
-              onDoublePress={() => {}}
             />
           )}
-          initialNumToRender={5}
+          ListEmptyComponent={SearchListEmptyComponent}
           ItemSeparatorComponent={ListItemSeparatorComponent}
+          initialNumToRender={5}
           contentContainerStyle={appStyle.newsContainer}
         />
       )}
@@ -97,13 +96,25 @@ const SearchScreen = ({route}) => {
   );
 };
 
+const SearchListEmptyComponent = () => (
+  <Text
+    style={{
+      textAlign: 'center',
+      fontSize: 18,
+      color: '#a4b383',
+    }}>
+    Find out intresting news by typing in searchbar above
+  </Text>
+);
+
 const ListItemSeparatorComponent = () => <View style={{height: 15}} />;
 
 const style = StyleSheet.create({
   inputContainer: {
     width: '90%',
     alignSelf: 'center',
-    marginVertical: 30,
+    marginTop: 30,
+    marginBottom: 20,
     paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',

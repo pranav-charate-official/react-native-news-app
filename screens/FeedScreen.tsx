@@ -5,8 +5,7 @@ import axios from 'axios';
 import NewsCard from '../components/NewsCard';
 import {FlatList} from 'react-native-gesture-handler';
 
-const FeedScreen = ({route}) => {
-  const {toggleBookmark} = route.params;
+const FeedScreen = () => {
   const [news, setNews] = useState<News[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -62,7 +61,6 @@ const FeedScreen = ({route}) => {
               newsDescription={item.description}
               newsSourceName={item.source.name}
               newsImageUrl={item.urlToImage}
-              onDoublePress={() => {}}
             />
           )}
           initialNumToRender={5}

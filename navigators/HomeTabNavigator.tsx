@@ -1,38 +1,15 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import FeedScreen from '../screens/FeedScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import {StyleSheet, ToastAndroid} from 'react-native';
+import {StyleSheet} from 'react-native';
 import SearchScreen from '../screens/SearchScreen';
 import Icon from '@react-native-vector-icons/material-design-icons';
-import BookmarkScreen from '../screens/BookmarkScreen';
-import {getBookmarks, saveBookmarks} from '../utils/AsyncStorageHelper';
+import BookmarksScreen from '../screens/BookmarksScreen';
 
 const Tab = createBottomTabNavigator();
 
 const HomeTabNavigator = () => {
-  const [bookmarks, setBookmarks] = useState<News[]>([]);
-
-  useEffect(() => {
-    const loadBookmarks = async () => {
-      const savedBookmarks = await getBookmarks();
-      setBookmarks(savedBookmarks);
-    };
-    // loadBookmarks();
-  }, []);
-
-  const toggleBookmark = (newsItem: News) => {
-    const isBookmarked = bookmarks.some(item => item.title === newsItem.title);
-    const updatedBookmarks = isBookmarked
-      ? bookmarks.filter(item => item.title !== newsItem.title)
-      : [...bookmarks, newsItem];
-    saveBookmarks(updatedBookmarks);
-    // ToastAndroid.show(
-    //   isBookmarked ? 'Bookmark removed' : 'Bookmark added',
-    //   ToastAndroid.SHORT,
-    // );
-  };
-
   return (
     <Tab.Navigator
       backBehavior="initialRoute"
@@ -56,21 +33,9 @@ const HomeTabNavigator = () => {
         tabBarActiveTintColor: '#7cb100',
         headerShown: false,
       })}>
-      <Tab.Screen
-        name="Feed"
-        component={FeedScreen}
-        initialParams={{toggleBookmark}}
-      />
-      <Tab.Screen
-        name="Search"
-        component={SearchScreen}
-        initialParams={{toggleBookmark}}
-      />
-      <Tab.Screen
-        name="Bookmark"
-        component={BookmarkScreen}
-        initialParams={{toggleBookmark, bookmarks}}
-      />
+      <Tab.Screen name="Feed" component={FeedScreen} />
+      <Tab.Screen name="Search" component={SearchScreen} />
+      <Tab.Screen name="Bookmark" component={BookmarksScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

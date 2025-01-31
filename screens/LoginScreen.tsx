@@ -12,16 +12,15 @@ import FormInputField from '../components/FormInputField';
 import FormButton from '../components/FormButton';
 import DividerWithText from '../components/DividerWithText';
 import {assets} from '../assets/assets';
-import {AuthContext} from '../contexts/AuthContext';
+import {authContext} from '../contexts/authContext';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const {user} = useContext(AuthContext);
+  const {user} = useContext(authContext);
 
   function validateLogin(currentUser: User | null) {
-    console.log(currentUser);
     if (currentUser == null) {
       return ToastAndroid.show('Register yourself first', ToastAndroid.SHORT);
     }
@@ -46,7 +45,7 @@ const LoginScreen = ({navigation}) => {
     setPassword('');
 
     navigation.navigate('HomeTabNavigator');
-    return ToastAndroid.show('Login successful', ToastAndroid.SHORT);
+    return ToastAndroid.show('Login awesome', ToastAndroid.SHORT);
   }
 
   return (
